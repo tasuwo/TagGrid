@@ -3,6 +3,9 @@ import PackageDescription
 
 let package = Package(
     name: "TagGrid",
+    platforms: [
+        .iOS(.v15), .macOS(.v11)
+    ],
     products: [
         .library(
             name: "TagGrid",
