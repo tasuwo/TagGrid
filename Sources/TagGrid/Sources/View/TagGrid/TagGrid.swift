@@ -53,28 +53,26 @@ public struct TagGrid: View {
                     availableWidth = $0.width
                 }
 
-            GeometryReader { geometry in
-                ScrollView {
-                    VStack(alignment: .leading, spacing: spacing) {
-                        Color.clear
-                            .frame(height: 0)
-                            .frame(minWidth: 0, maxWidth: .infinity)
+            ScrollView {
+                VStack(alignment: .leading, spacing: spacing) {
+                    Color.clear
+                        .frame(height: 0)
+                        .frame(minWidth: 0, maxWidth: .infinity)
 
-                        ForEach(calcRows(), id: \.self) { tags in
-                            HStack(spacing: spacing) {
-                                ForEach(tags) {
-                                    cell(geometry, $0)
-                                }
+                    ForEach(calcRows(), id: \.self) { tags in
+                        HStack(spacing: spacing) {
+                            ForEach(tags) {
+                                cell($0)
                             }
                         }
                     }
-                    .padding(.all, inset)
                 }
+                .padding(.all, inset)
             }
         }
     }
 
-    private func cell(_ geometry: GeometryProxy, _ tag: Tag) -> some View {
+    private func cell(_ tag: Tag) -> some View {
         return TagCell(
             tag: tag,
             status: .init(configuration, isSelected: selectedIds.contains(tag.id)),
@@ -86,11 +84,8 @@ public struct TagGrid: View {
                 onAction?(.delete($0))
             }
         )
-        .frame(maxWidth: geometry.size.width - inset * 2)
+        .frame(maxWidth: availableWidth - inset * 2)
         .fixedSize()
-        .onChangeFrame {
-            cellSizes[tag] = $0
-        }
         .contextMenu {
             menu(tag)
         }
@@ -120,7 +115,16 @@ public struct TagGrid: View {
         var remainingWidth = availableWidth - inset * 2
 
         for tag in tags {
-            let cellSize = cellSizes[tag, default: CGSize(width: availableWidth - inset * 2, height: 1)]
+            let cellSize: CGSize
+            if let size = cellSizes[tag] {
+                cellSize = size
+            } else {
+                let size = TagCell.preferredSize(tag: tag,
+                                                 size: configuration.size,
+                                                 isDeletable: configuration.style == .deletable)
+                let width = min(size.width, availableWidth - inset * 2)
+                cellSize = CGSize(width: width, height: size.height)
+            }
 
             if remainingWidth - (cellSize.width + spacing) >= 0 {
                 rows[currentRow].append(tag)
