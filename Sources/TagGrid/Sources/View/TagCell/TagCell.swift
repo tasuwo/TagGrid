@@ -126,6 +126,29 @@ public struct TagCell: View {
             onSelect?(tag.id)
         }
     }
+
+    // MARK: - Methods
+
+    static func preferredSize(tag: Tag, size: TagCell.Size, isDeletable: Bool) -> CGSize {
+        let font = size.font
+        let padding = size.padding.scaledValueWithDefaultMetrics()
+
+        let markSize = String.labelSizeOfSymbol(systemName: "checkmark", withFont: font)
+        let tagNameSize = tag.name.labelSize(withFont: font)
+        let countLabelSize = "(\(tag.count))".labelSize(withFont: font)
+
+        let cellHeight = max(markSize.height, tagNameSize.height, countLabelSize.height) + padding * 2
+
+        let bodyWidth = markSize.width + 2 + tagNameSize.width + 4 + countLabelSize.width
+        let horizontalPadding = padding * 3 / 2
+        var cellWidth = bodyWidth + horizontalPadding * 2
+
+        if isDeletable {
+            cellWidth += padding * 2 + String.labelSizeOfSymbol(systemName: "xmark", withFont: font).width
+        }
+
+        return CGSize(width: cellWidth, height: cellHeight)
+     }
 }
 
 // MARK: - Preview
