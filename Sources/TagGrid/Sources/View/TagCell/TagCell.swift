@@ -131,7 +131,7 @@ public struct TagCell: View {
 
     static func preferredSize(tag: Tag, size: TagCell.Size, isDeletable: Bool) -> CGSize {
         let font = size.font
-        let padding = size.padding.scaledValueWithDefaultMetrics()
+        let padding = size.padding.scaledValue(for: font)
 
         let markSize = String.labelSizeOfSymbol(systemName: "checkmark", withFont: font)
         let tagNameSize = tag.name.labelSize(withFont: font)

@@ -7,42 +7,46 @@ import UIKit
 
 extension Font {
     var uiFont: UIFont {
+        return UIFont.preferredFont(forTextStyle: self.uiTextStyle)
+    }
+
+    var uiTextStyle: UIFont.TextStyle {
         switch self {
         case .largeTitle:
-            return UIFont.preferredFont(forTextStyle: .largeTitle)
+            return .largeTitle
 
         case .title:
-            return UIFont.preferredFont(forTextStyle: .title1)
+            return .title1
 
         case .title2:
-            return UIFont.preferredFont(forTextStyle: .title2)
+            return .title2
 
         case .title3:
-            return UIFont.preferredFont(forTextStyle: .title3)
+            return .title3
 
         case .headline:
-            return UIFont.preferredFont(forTextStyle: .headline)
+            return .headline
 
         case .subheadline:
-            return UIFont.preferredFont(forTextStyle: .subheadline)
+            return .subheadline
 
         case .callout:
-            return UIFont.preferredFont(forTextStyle: .callout)
+            return .callout
 
         case .caption:
-            return UIFont.preferredFont(forTextStyle: .caption1)
+            return .caption1
 
         case .caption2:
-            return UIFont.preferredFont(forTextStyle: .caption2)
+            return .caption2
 
         case .footnote:
-            return UIFont.preferredFont(forTextStyle: .footnote)
+            return .footnote
 
         case .body:
             fallthrough
 
         default:
-            return UIFont.preferredFont(forTextStyle: .body)
+            return .body
         }
     }
 }

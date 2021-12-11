@@ -7,7 +7,7 @@ import SwiftUI
 import UIKit
 
 extension CGFloat {
-    func scaledValueWithDefaultMetrics() -> CGFloat {
-        return UIFontMetrics.default.scaledValue(for: self)
+    func scaledValue(for font: Font) -> CGFloat {
+        return UIFontMetrics(forTextStyle: font.uiTextStyle).scaledValue(for: self)
     }
 }
